@@ -26,63 +26,14 @@ class Kernel extends ConsoleKernel
                         $jadwalAlat = $alat->jadwal
                             ->where('status', 'jadwal baru')
                             ->first();
-
-                        $jadwalKalibrasi = Carbon::parse(
-                            $jadwalAlat->jadwal_kalibrasi
-                        );
-                        $numberDays = $jadwalKalibrasi->diffInDays(
-                            Carbon::now()->subDay()
-                        );
-                        if ($numberDays == 30) {
-                            $alat->status_kalibrasi = 'persiapan kalibrasi';
-                            $alat->save();
-                            UserNotification::create([
-                                'user_id' => $alat->user_id,
-                                'message' =>
-                                    '<a href="/dashboard/alat/' .
-                                    $alat->id .
-                                    '"><p><b>' .
-                                    $alat->nama_alat .
-                                    ' - ' .
-                                    $alat->merk .
-                                    '</b> membutuhkan kalibrasi dalam ' .
-                                    $numberDays .
-                                    ' hari</p></a>',
-                            ]);
-                        } elseif ($numberDays == 15) {
-                            $alat->status_kalibrasi = 'persiapan kalibrasi';
-                            $alat->save();
-                            UserNotification::create([
-                                'user_id' => $alat->user_id,
-                                'message' =>
-                                    '<a href="/dashboard/alat/' .
-                                    $alat->id .
-                                    '"><p><b>' .
-                                    $alat->nama_alat .
-                                    ' - ' .
-                                    $alat->merk .
-                                    '</b> membutuhkan kalibrasi dalam ' .
-                                    $numberDays .
-                                    ' hari</p></a>',
-                            ]);
-                        } elseif ($numberDays <= 7) {
-                            if ($numberDays < 1) {
-                                UserNotification::create([
-                                    'user_id' => $alat->user_id,
-                                    'message' =>
-                                        '<a href="/dashboard/alat/' .
-                                        $alat->id .
-                                        '"><p>Status <b>' .
-                                        $alat->nama_alat .
-                                        ' - ' .
-                                        $alat->merk .
-                                        '</b> Menjadi Kadaluarsa</p></a>',
-                                ]);
-                                $jadwalAlat->status = 'kadaluarsa';
-                                $jadwalAlat->save();
-                                $alat->status_kalibrasi = 'kadaluarsa';
-                                $alat->save();
-                            } else {
+                        if ($jadwalAlat->status == 'jadwal baru') {
+                            $jadwalKalibrasi = Carbon::parse(
+                                $jadwalAlat->jadwal_kalibrasi
+                            );
+                            $numberDays = $jadwalKalibrasi->diffInDays(
+                                Carbon::now()->subDay()
+                            );
+                            if ($numberDays == 30) {
                                 $alat->status_kalibrasi = 'persiapan kalibrasi';
                                 $alat->save();
                                 UserNotification::create([
@@ -98,6 +49,57 @@ class Kernel extends ConsoleKernel
                                         $numberDays .
                                         ' hari</p></a>',
                                 ]);
+                            } elseif ($numberDays == 15) {
+                                $alat->status_kalibrasi = 'persiapan kalibrasi';
+                                $alat->save();
+                                UserNotification::create([
+                                    'user_id' => $alat->user_id,
+                                    'message' =>
+                                        '<a href="/dashboard/alat/' .
+                                        $alat->id .
+                                        '"><p><b>' .
+                                        $alat->nama_alat .
+                                        ' - ' .
+                                        $alat->merk .
+                                        '</b> membutuhkan kalibrasi dalam ' .
+                                        $numberDays .
+                                        ' hari</p></a>',
+                                ]);
+                            } elseif ($numberDays <= 7) {
+                                if ($numberDays < 1) {
+                                    UserNotification::create([
+                                        'user_id' => $alat->user_id,
+                                        'message' =>
+                                            '<a href="/dashboard/alat/' .
+                                            $alat->id .
+                                            '"><p>Status <b>' .
+                                            $alat->nama_alat .
+                                            ' - ' .
+                                            $alat->merk .
+                                            '</b> Menjadi Kadaluarsa</p></a>',
+                                    ]);
+                                    $jadwalAlat->status = 'kadaluarsa';
+                                    $jadwalAlat->save();
+                                    $alat->status_kalibrasi = 'kadaluarsa';
+                                    $alat->save();
+                                } else {
+                                    $alat->status_kalibrasi =
+                                        'persiapan kalibrasi';
+                                    $alat->save();
+                                    UserNotification::create([
+                                        'user_id' => $alat->user_id,
+                                        'message' =>
+                                            '<a href="/dashboard/alat/' .
+                                            $alat->id .
+                                            '"><p><b>' .
+                                            $alat->nama_alat .
+                                            ' - ' .
+                                            $alat->merk .
+                                            '</b> membutuhkan kalibrasi dalam ' .
+                                            $numberDays .
+                                            ' hari</p></a>',
+                                    ]);
+                                }
                             }
                         }
                     }
