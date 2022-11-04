@@ -43,18 +43,14 @@ class Kernel extends ConsoleKernel
                                         'nama_alat' => $alat->nama_alat,
                                         'id' => $alat->id,
                                         'days' => $numberDays,
+                                        'lokasi' => $alat->lokasi,
+                                        'jadwal' => $jadwalKalibrasi,
                                     ],
-                                    function ($message) use (
-                                        $alat,
-                                        $numberDays
-                                    ) {
+                                    function ($message) use ($alat) {
                                         $message->to($alat->user->email);
                                         $message->subject(
-                                            'Alat ' .
-                                                $alat->nama_alat .
-                                                ' Membutuhkan Kalibrasi Dalam ' .
-                                                $numberDays .
-                                                ' Hari'
+                                            'Pemberitahuan Jadwal Kalibrasi ' .
+                                                $alat->nama_alat
                                         );
                                     }
                                 );
@@ -82,18 +78,14 @@ class Kernel extends ConsoleKernel
                                         'nama_alat' => $alat->nama_alat,
                                         'id' => $alat->id,
                                         'days' => $numberDays,
+                                        'lokasi' => $alat->lokasi,
+                                        'jadwal' => $jadwalKalibrasi,
                                     ],
-                                    function ($message) use (
-                                        $alat,
-                                        $numberDays
-                                    ) {
+                                    function ($message) use ($alat) {
                                         $message->to($alat->user->email);
                                         $message->subject(
-                                            'Alat ' .
-                                                $alat->nama_alat .
-                                                ' Membutuhkan Kalibrasi Dalam ' .
-                                                $numberDays .
-                                                ' Hari'
+                                            'Pemberitahuan Jadwal Kalibrasi ' .
+                                                $alat->nama_alat
                                         );
                                     }
                                 );
@@ -113,23 +105,6 @@ class Kernel extends ConsoleKernel
                             ]);
                         } elseif ($numberDays <= 7) {
                             if ($numberDays < 1) {
-                                if ($alat->user->email) {
-                                    Mail::send(
-                                        'emails.pemeberitahuanKadaluarsaEmail',
-                                        [
-                                            'nama_alat' => $alat->nama_alat,
-                                            'id' => $alat->id,
-                                        ],
-                                        function ($message) use ($alat) {
-                                            $message->to($alat->user->email);
-                                            $message->subject(
-                                                'Status Alat ' .
-                                                    $alat->nama_alat .
-                                                    ' Telah Menjadi Kadaluarsa'
-                                            );
-                                        }
-                                    );
-                                }
                                 UserNotification::create([
                                     'user_id' => $alat->user_id,
                                     'message' =>
@@ -155,18 +130,14 @@ class Kernel extends ConsoleKernel
                                             'nama_alat' => $alat->nama_alat,
                                             'id' => $alat->id,
                                             'days' => $numberDays,
+                                            'lokasi' => $alat->lokasi,
+                                            'jadwal' => $jadwalKalibrasi,
                                         ],
-                                        function ($message) use (
-                                            $alat,
-                                            $numberDays
-                                        ) {
+                                        function ($message) use ($alat) {
                                             $message->to($alat->user->email);
                                             $message->subject(
-                                                'Alat ' .
-                                                    $alat->nama_alat .
-                                                    ' Membutuhkan Kalibrasi Dalam ' .
-                                                    $numberDays .
-                                                    ' Hari'
+                                                'Pemberitahuan Jadwal Kalibrasi ' .
+                                                    $alat->nama_alat
                                             );
                                         }
                                     );

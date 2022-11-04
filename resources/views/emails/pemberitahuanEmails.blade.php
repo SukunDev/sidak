@@ -187,18 +187,19 @@
 
                                                             <div
                                                                 style="line-height: 140%; text-align: left; word-wrap: break-word;">
-                                                                <p style="font-size: 14px; line-height: 140%;">Alat
-                                                                    {{ $nama_alat }} membutuhkan kalibrasi dalam
-                                                                    {{ $days }}
-                                                                    hari.
-                                                                    Silahkan pergi ke dashboard alat untuk melihat
-                                                                    konfigurasi alat {{ $nama_alat }}. Untuk pergi ke
-                                                                    dashboard
-                                                                    alat {{ $nama_alat }} anda bisa mengeklik tombol
-                                                                    di bawah
-                                                                    ini atau link ini <a rel="noopener"
+                                                                <p style="font-size: 14px; line-height: 140%;">Persiapan
+                                                                    kalibrasi {{ $nama_alat }},
+                                                                    {{ $nama_alat . ' ' . $lokasi }} membutuhkan
+                                                                    kalibrasi dalam {{ $days }} Hari atau
+                                                                    kadaluarsa
+                                                                    pada {{ $jadwal->format('d, M Y') }}.
+                                                                    Harap persiapkan berkas dan alat uji terkait beserta
+                                                                    kelengkapannya.
+                                                                    Klik link <a rel="noopener"
                                                                         href="{{ env('APP_URL') . '/dashboard/alat/' . $id }}"
-                                                                        target="_blank">{{ env('APP_URL') . '/dashboard/alat/' . $id }}</a>
+                                                                        target="_blank">{{ env('APP_URL') . '/dashboard/alat/' . $id }}</a>,
+                                                                    untuk informasi lebih detail atau klik tombol
+                                                                    dibawah ini.
                                                                 </p>
                                                             </div>
 
