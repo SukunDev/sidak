@@ -55,7 +55,7 @@
                 @endcomponent
             </li>
             @if ($user->is_admin)
-                <li class="px-4 pt-4 pb-2 uppercase">Admin</li>
+                <li class="sidebar-item px-4 pt-4 pb-2 uppercase">Admin</li>
                 <li>
                     @component('dashboard.layout.partials.sidebardropdownlink',
                         [

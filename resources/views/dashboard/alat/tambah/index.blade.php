@@ -63,7 +63,7 @@
                 <label class="capitalize font-medium" for="keteranganForm">keterangan</label>
                 <textarea
                     class="px-4 py-2 rounded-md bg-gray-200 focus:outline-gray-200 focus:bg-white focus:shadow-md transition duration-300"
-                    name="keterangan" id="keteranganForm" rows="3"></textarea>
+                    name="keterangan" id="keteranganForm" rows="3" required></textarea>
             </div>
             <div class="flex justify-center">
                 <button class="w-1/2 py-2 rounded-md bg-green-500 text-white" type="submit">Submit</button>

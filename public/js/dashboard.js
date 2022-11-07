@@ -24,7 +24,7 @@ $(document).ready(function () {
   })
   $('.btn-dropdown').on('click', function () {
     var dropdown = $(this)
-    dropdown.parent().find('#item-dropdown').animate(
+    dropdown.parent().find('.item-dropdown').animate(
       {
         height: 'toggle',
       },
@@ -73,7 +73,7 @@ $(document).ready(function () {
       $('.sidebar-item').hide()
       $('#sidebar-content').css({ width: 'fit-content' })
       $('#main-content').css({ 'padding-left': '4rem' })
-      $('#item-dropdown').css({ display: 'none' })
+      $('.item-dropdown').css({ display: 'none' })
     } else {
       button.show()
       $('#sidebar').addClass('active-sidebar')
@@ -89,7 +89,7 @@ $(document).ready(function () {
         $('.sidebar-item-button').show()
         $('#sidebar-content').css({ width: '16rem' })
         if ($('.btn-dropdown').find('#arrow-dropdown').hasClass('flip')) {
-          $('#item-dropdown').css({ display: 'block' })
+          $('.item-dropdown').css({ display: 'block' })
         }
       }
     },
@@ -98,7 +98,7 @@ $(document).ready(function () {
         $('.sidebar-item').hide()
         $('.sidebar-item-button').hide()
         $('#sidebar-content').css({ width: 'fit-content' })
-        $('#item-dropdown').css({ display: 'none' })
+        $('.item-dropdown').css({ display: 'none' })
       }
     },
   )

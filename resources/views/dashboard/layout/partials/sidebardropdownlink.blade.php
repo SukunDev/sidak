@@ -11,7 +11,7 @@
         <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6-1.41-1.41z" />
     </svg>
 </button>
-<ul id="item-dropdown" class="{{ Request::is($slug . '*') ? '' : 'hidden' }}">
+<ul class="item-dropdown {{ Request::is($slug . '*') ? '' : 'hidden' }}">
     @foreach ($dropdowns as $item)
         <li>
             <a class="flex items-center pl-14 pr-4 py-2 gap-4 {{ Request::is($item['slug']) ? 'bg-black/[.10] text-white' : 'hover:bg-black/[.05] hover:text-white' }} transition duration-300 capitalize"
