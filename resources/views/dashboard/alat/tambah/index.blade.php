@@ -32,7 +32,7 @@
                 <select
                     class="px-4 py-2 rounded-md bg-gray-200 focus:outline-gray-200 focus:bg-white focus:shadow-md transition duration-300"
                     name="lokasi" id="lokasiForm">
-                    <option value="Lab. Houshould">Lab. Houshould</option>
+                    <option value="Lab. Household">Lab. Household</option>
                     <option value="Lab. Audio Video">Lab. Audio Video</option>
                     <option value="Lab. EMC">Lab. EMC</option>
                     <option value="Lab Radio Frequency">Lab Radio Frequency</option>
