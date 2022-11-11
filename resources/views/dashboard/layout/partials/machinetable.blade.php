@@ -2,20 +2,39 @@
     <div class="max-w-full mx-auto">
         <div class="flex flex-col">
             @if (empty($filter) || $filter == 'true')
-                <div class="flex justify-end">
-                    <form method="GET">
-                        <input type="hidden" name="search" value="{{ request('search') }}">
-                        <select onchange="this.form.submit()"
-                            class="px-4 py-2 rounded-md bg-gray-100 focus:outline-gray-100 focus:bg-white focus:shadow-md transition duration-300 capitalize"
-                            name="status" id="statusForm">
-                            <option value="">semua</option>
-                            <option value="sudah terkalibrasi" @if (request('status') === 'sudah terkalibrasi') selected @endif>sudah
-                                terkalibrasi</option>
-                            <option value="persiapan kalibrasi" @if (request('status') === 'persiapan kalibrasi') selected @endif>
-                                persiapan kalibrasi</option>
-                            <option value="kadaluarsa" @if (request('status') === 'kadaluarsa') selected @endif>kadaluarsa
-                            </option>
-                        </select>
+                <div class="flex gap-4 justify-end">
+                    <form class="flex gap-4 items-center" method="GET">
+                        @if (request('search'))
+                            <input type="hidden" name="search" value="{{ request('search') }}">
+                        @endif
+                        <div class="flex flex-col">
+                            <label class="capitalize font-medium" for="filterByForm">Filter</label>
+                            <select onchange="this.form.submit()"
+                                class="px-4 py-2 rounded-md bg-gray-100 focus:outline-gray-100 focus:bg-white focus:shadow-md transition duration-300 capitalize"
+                                name="filter_by" id="filterByForm">
+                                <option value="nama_alat" @if (request('filter_by') === 'nama_alat') selected @endif>nama
+                                </option>
+                                <option value="kode_alat" @if (request('filter_by') === 'kode_alat') selected @endif>
+                                    kode alat</option>
+                                <option value="created_at" @if (request('filter_by') === 'created_at') selected @endif>terbaru
+                                </option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col">
+                            <label class="capitalize font-medium" for="statusForm">status kalibrasi</label>
+                            <select onchange="this.form.submit()"
+                                class="px-4 py-2 rounded-md bg-gray-100 focus:outline-gray-100 focus:bg-white focus:shadow-md transition duration-300 capitalize"
+                                name="status" id="statusForm">
+                                <option value="">Semua</option>
+                                <option value="sudah terkalibrasi" @if (request('status') === 'sudah terkalibrasi') selected @endif>
+                                    sudah
+                                    terkalibrasi</option>
+                                <option value="persiapan kalibrasi" @if (request('status') === 'persiapan kalibrasi') selected @endif>
+                                    persiapan kalibrasi</option>
+                                <option value="kadaluarsa" @if (request('status') === 'kadaluarsa') selected @endif>kadaluarsa
+                                </option>
+                            </select>
+                        </div>
                     </form>
                 </div>
             @endif

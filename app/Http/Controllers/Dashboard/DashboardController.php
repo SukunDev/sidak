@@ -18,11 +18,15 @@ class DashboardController extends Controller
                 'slug' => 'dashboard',
             ],
         ];
+        $filterBy = "nama_alat";
+        if(request('filter_by')){
+            $filterBy = request('filter_by');
+        }
         return view('dashboard.index', [
             'title' => $title,
             'breadcrumbs' => $breadcrumbs,
             'user' => Auth::user(),
-            'alat' => Alat::orderBy('nama_alat','ASC')
+            'alat' => Alat::orderBy($filterBy,'ASC')
                 ->filter(request(['search', 'status']))
                 ->paginate(15)
                 ->withQueryString(),
