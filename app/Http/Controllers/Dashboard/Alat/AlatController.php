@@ -26,15 +26,19 @@ class AlatController extends Controller
             ],
         ];
         $filterBy = 'created_at';
+        $sort = 'ASC';
         if (request('filter_by')) {
             $filterBy = request('filter_by');
+            if ($filterBy == 'created_at') {
+                $sort = 'DESC';
+            }
         }
         return view('dashboard.alat.index', [
             'title' => $title,
             'breadcrumbs' => $breadcrumbs,
             'user' => Auth::user(),
             'alat' => Alat::where('user_id', Auth::user()->id)
-                ->orderBy($filterBy, 'ASC')
+                ->orderBy($filterBy, $sort)
                 ->filter(request(['search', 'status']))
                 ->paginate(15)
                 ->withQueryString(),
