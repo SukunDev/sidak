@@ -12,6 +12,10 @@
 <body class="bg-[#181818]">
     @include('dashboard.layout.partials.alert')
     <div class="fixed inset-0 m-auto w-full md:w-1/3 h-fit">
+        <div class="text-center text-white my-4 text-xl">
+            <p>Login Sistem Informasi Database Kalibrasi (SIDAK)
+                Lab. Elektro dan EMC</p>
+        </div>
         <div class="rounded-md bg-white px-6 py-6 shadow-md text-gray-700 space-y-4 font-Poppins">
             <div>
                 <h1 class="text-2xl font-medium">Login</h1>
