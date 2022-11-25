@@ -16,11 +16,10 @@ class Alat extends Model
     {
         $query->when(
             $filters['search'] ?? false,
-            fn($query, $search) => $query->where(
-                'nama_alat',
-                'like',
-                '%' . $search . '%'
-            )
+            fn($query, $search) => $query
+                ->where('nama_alat', 'like', '%' . $search . '%')
+                ->orWhere('merk', 'like', '%' . $search . '%')
+                ->orWhere('kode_alat', 'like', '%' . $search . '%')
         );
         $query->when(
             $filters['status'] ?? false,

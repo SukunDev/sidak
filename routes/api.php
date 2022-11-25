@@ -75,11 +75,10 @@ Route::post('/update-notification/{id}', function ($id, Request $request) {
     }
 });
 Route::get('/search', function (Request $request) {
-    return Alat::where(
-        'nama_alat',
-        'like',
-        '%' . $request->search . '%'
-    )->get();
+    return Alat::where('nama_alat', 'like', '%' . $request->search . '%')
+        ->orWhere('merk', 'like', '%' . $request->search . '%')
+        ->orWhere('kode_alat', 'like', '%' . $request->search . '%')
+        ->get();
 });
 
 Route::post('/upload-image', function (Request $request) {
