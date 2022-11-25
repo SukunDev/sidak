@@ -61,7 +61,7 @@
                 @include('dashboard.layout.partials.profilepanel')
                 <div id="searchPanel" class="fixed top-[100px] md:top-[60px] inset-x-4 md:right-auto md:left-[17rem]"
                     style="display: none">
-                    <div class="w-full md:w-[26rem] rounded-md bg-white shadow-md border border-gray-200">
+                    <div class="w-full md:w-[29rem] rounded-md bg-white shadow-md border border-gray-200">
                         <form class="block sm:hidden"
                             action="/{{ Request::is('dashboard') ? 'dashboard' : 'dashboard/alat' }}" method="GET">
                             <div class="flex items-center">
