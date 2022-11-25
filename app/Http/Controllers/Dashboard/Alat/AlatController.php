@@ -226,7 +226,7 @@ class AlatController extends Controller
             ]);
         }
         $validatedData = $request->validate([
-            'jadwal_kalibrasi' => 'required|after:yesterday',
+            'jadwal_kalibrasi' => 'required',
         ]);
         if (
             $detail->jadwal
