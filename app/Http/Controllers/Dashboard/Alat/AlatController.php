@@ -82,7 +82,7 @@ class AlatController extends Controller
         $alatData['siklus_kalibrasi'] =
             $request->siklus_kalibrasi > 0 ? $request->siklus_kalibrasi : 0;
         $alatData['user_id'] = Auth::user()->id;
-        $alatData['status_kalibrasi'] = 'baru ditambahkan';
+        $alatData['status_kalibrasi'] = 'belum dijadwalkan';
         $createAlat = Alat::create($alatData);
         if ($createAlat) {
             return redirect('/dashboard/alat')->with([

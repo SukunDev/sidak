@@ -26,8 +26,8 @@
                                 class="px-4 py-2 rounded-md bg-gray-100 focus:outline-gray-100 focus:bg-white focus:shadow-md transition duration-300 capitalize"
                                 name="status" id="statusForm">
                                 <option value="">Semua</option>
-                                <option value="baru ditambahkan" @if (request('status') === 'baru ditambahkan') selected @endif>
-                                    baru ditambahkan</option>
+                                <option value="belum dijadwalkan" @if (request('status') === 'belum dijadwalkan') selected @endif>
+                                    belum dijadwalkan</option>
                                 <option value="sudah terkalibrasi" @if (request('status') === 'sudah terkalibrasi') selected @endif>
                                     sudah
                                     terkalibrasi</option>
