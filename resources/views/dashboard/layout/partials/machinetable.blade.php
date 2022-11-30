@@ -26,6 +26,8 @@
                                 class="px-4 py-2 rounded-md bg-gray-100 focus:outline-gray-100 focus:bg-white focus:shadow-md transition duration-300 capitalize"
                                 name="status" id="statusForm">
                                 <option value="">Semua</option>
+                                <option value="baru ditambahkan" @if (request('status') === 'baru ditambahkan') selected @endif>
+                                    baru ditambahkan</option>
                                 <option value="sudah terkalibrasi" @if (request('status') === 'sudah terkalibrasi') selected @endif>
                                     sudah
                                     terkalibrasi</option>
@@ -138,9 +140,16 @@
                                         @if ($item->status_kalibrasi)
                                             <td class="text-sm text-gray-500 px-6 py-4 whitespace-nowrap">
                                                 <span
-                                                    class="py-1.5 rounded-md @if ($item->status_kalibrasi === 'sudah terkalibrasi') bg-green-500 px-4
-@elseif($item->status_kalibrasi === 'kadaluarsa')
-bg-red-500 px-10 @else bg-blue-500 px-4 @endif text-white capitalize">
+                                                    class="py-1.5 rounded-md @php
+if($item->status_kalibrasi === 'sudah terkalibrasi'){
+                                                            echo "bg-green-500 px-4";
+                                                        }else if($item->status_kalibrasi === 'kadaluarsa'){
+                                                            echo "bg-red-500 px-10";
+                                                        }elseif($item->status_kalibrasi === 'persiapan kalibrasi'){
+                                                            echo "bg-blue-500 px-4";
+                                                        }else{
+                                                            echo "bg-gray-500 px-4";
+                                                        } @endphp text-white capitalize">
                                                     {{ $item->status_kalibrasi }}
                                                 </span>
                                             </td>
