@@ -19,18 +19,20 @@ class User extends Authenticatable
      */
     protected $table = 'users';
     protected $guarded = ['id'];
-    protected $with = ['notifications'];
+    protected $with = ['notifications', 'alat'];
 
     public function notifications()
     {
-        return $this->hasMany(UserNotification::class)
-            ->orderBy('has_been_view', 'ASC')
-            ->orderBy('created_at', 'DESC');
+        return $this->hasMany(UserNotification::class)->orderBy(
+            'created_at',
+            'DESC'
+        );
     }
     public function alat()
     {
         return $this->hasMany(Alat::class)->latest();
     }
+
     /**
      * The attributes that should be hidden for serialization.
      *

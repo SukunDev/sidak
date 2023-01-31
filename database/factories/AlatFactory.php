@@ -14,7 +14,7 @@ class AlatFactory extends Factory
     public function definition()
     {
         return [
-            //
-        ];
+                //
+            ];
     }
 }

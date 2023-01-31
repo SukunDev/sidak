@@ -1,11 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\Dashboard\Alat\AlatController;
-use App\Http\Controllers\Dashboard\DashboardController;
-use App\Http\Controllers\Dashboard\Admin\AdminController;
-use App\Http\Controllers\Dashboard\Settings\SettingsController;
+use App\Http\Controllers\User\Alat\AlatController as UserAlatController;
+use App\Http\Controllers\Admin\Alat\AlatController as AdminAlatController;
+use App\Http\Controllers\Admin\Users\UsersController as AdminUsersController;
+use App\Http\Controllers\User\Settings\SettingsController as UserSettingsController;
+use App\Http\Controllers\Admin\Settings\SettingsController as AdminSettingsController;
+use App\Http\Controllers\User\Dashboard\DashboardController as UserDashboardController;
+use App\Http\Controllers\Admin\Dashboard\DashboardController as AdminDashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,68 +25,103 @@ use App\Http\Controllers\Dashboard\Settings\SettingsController;
 Route::get('/', function () {
     return redirect('/auth/login');
 });
-
+// Auth
 Route::get('/auth/login', [AuthController::class, 'login'])
     ->middleware('guest')
     ->name('login');
 Route::post('/auth/login', [AuthController::class, 'postLogin']);
 Route::post('/auth/logout', [AuthController::class, 'logout']);
 
-Route::prefix('dashboard')
-    ->middleware('auth')
-    ->group(function () {
-        Route::get('/', [DashboardController::class, 'index']);
-        Route::get('/settings', [SettingsController::class, 'index']);
-        Route::post('/settings', [SettingsController::class, 'settings']);
-        Route::get('/alat', [AlatController::class, 'index']);
-        Route::get('/alat/tambah', [AlatController::class, 'tambah']);
-        Route::post('/alat/tambah', [AlatController::class, 'tambahPost']);
-        Route::get('/alat/{detail:id}', [AlatController::class, 'detail']);
-        Route::get('/alat/{detail:id}/edit', [AlatController::class, 'edit']);
-        Route::post('/alat/{detail:id}/edit', [
-            AlatController::class,
-            'editPost',
-        ]);
-        Route::post('/alat/{detail:id}/tambah-jadwal', [
-            AlatController::class,
-            'tambahJadwal',
-        ]);
-        Route::get('/alat/{detail:id}/hapus-jadwal', [
-            AlatController::class,
-            'hapusJadwal',
-        ]);
-        Route::get('/alat/{detail:id}/hapus-sertifikat/{sertifikat_id}', [
-            AlatController::class,
-            'hapusSertifikat',
-        ]);
-        Route::post('/alat/{detail:id}/upload-sertifikat', [
-            AlatController::class,
-            'uploadSertifikat',
-        ]);
-        Route::post('/alat/{detail:id}/sudah-terkalibrasi', [
-            AlatController::class,
-            'sudahTerkalibrasi',
-        ]);
-        Route::get('/alat/hapus/{id}', [AlatController::class, 'hapus']);
-
-        // Admin Page
-        Route::prefix('admin')->group(function () {
-            Route::get('/user', [AdminController::class, 'index']);
-            Route::get('/user/inactive', [
-                AdminController::class,
+// Admin
+Route::group(
+    ['prefix' => 'admin', 'middleware' => ['admin', 'auth']],
+    function () {
+        Route::get('/', [AdminDashboardController::class, 'index']);
+        Route::group(['prefix' => 'alat'], function () {
+            Route::get('/', [AdminAlatController::class, 'index']);
+            Route::get('/new', [AdminAlatController::class, 'newIndex']);
+            Route::post('/new', [AdminAlatController::class, 'newPost']);
+            Route::group(['prefix' => 'detail/{alat:id}'], function () {
+                Route::get('/', [AdminAlatController::class, 'detailIndex']);
+                Route::post('/tambah-jadwal', [
+                    AdminAlatController::class,
+                    'tambahJadwal',
+                ]);
+                Route::get('/hapus-jadwal', [
+                    AdminAlatController::class,
+                    'hapusJadwal',
+                ]);
+                Route::post('/sudah-terkalibrasi', [
+                    AdminAlatController::class,
+                    'sudahTerkalibrasi',
+                ]);
+                Route::post('/upload-sertifikat', [
+                    AdminAlatController::class,
+                    'uploadSertifikat',
+                ]);
+                Route::get('/hapus-sertifikat/{item_id}', [
+                    AdminAlatController::class,
+                    'hapusSertifikat',
+                ]);
+                Route::get('/hapus-keberterimaan/{item_id}', [
+                    AdminAlatController::class,
+                    'hapusKeberterimaan',
+                ]);
+            });
+            Route::get('/edit/{alat:id}', [
+                AdminAlatController::class,
+                'editIndex',
+            ]);
+            Route::post('/edit/{alat:id}', [
+                AdminAlatController::class,
+                'editPost',
+            ]);
+            Route::get('/hapus/{id}', [AdminAlatController::class, 'hapus']);
+        });
+        Route::group(['prefix' => 'user'], function () {
+            Route::get('/', [AdminUsersController::class, 'index']);
+            Route::post('/tambah-user', [
+                AdminUsersController::class,
+                'newUser',
+            ]);
+            Route::get('/inactive', [
+                AdminUsersController::class,
                 'userInActive',
             ]);
-            Route::get('/user/{user_detail:id}', [
-                AdminController::class,
+            Route::get('/{user:username}', [
+                AdminUsersController::class,
                 'userDetail',
             ]);
-            Route::post('/user/tambah-user', [
-                AdminController::class,
-                'tambahUser',
-            ]);
-            Route::post('/user/{id}/status', [
-                AdminController::class,
+            Route::post('/{user:username}/status', [
+                AdminUsersController::class,
                 'statusUser',
             ]);
+            Route::get('/{id}/hapus', [
+                AdminUsersController::class,
+                'hapusUser',
+            ]);
         });
-    });
+        Route::group(['prefix' => 'settings'], function () {
+            Route::get('/', [AdminSettingsController::class, 'index']);
+            Route::post('/', [AdminSettingsController::class, 'settings']);
+        });
+    }
+);
+
+// User
+Route::group(
+    ['prefix' => 'dashboard', 'middleware' => ['user', 'auth']],
+    function () {
+        Route::get('/', [UserDashboardController::class, 'index']);
+        Route::group(['prefix' => 'alat'], function () {
+            Route::get('/', [UserAlatController::class, 'index']);
+            Route::group(['prefix' => 'detail/{alat:id}'], function () {
+                Route::get('/', [UserAlatController::class, 'detailIndex']);
+            });
+        });
+        Route::group(['prefix' => 'settings'], function () {
+            Route::get('/', [UserSettingsController::class, 'index']);
+            Route::post('/', [UserSettingsController::class, 'settings']);
+        });
+    }
+);

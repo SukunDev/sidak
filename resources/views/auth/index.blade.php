@@ -10,7 +10,7 @@
 </head>
 
 <body class="bg-[#181818]">
-    @include('dashboard.layout.partials.alert')
+    @include('partials.alert')
     <div class="fixed inset-0 m-auto w-full md:w-1/3 h-fit">
         <div class="text-center text-white my-4 text-xl">
             <p>Login Sistem Informasi Database Kalibrasi (SIDAK)

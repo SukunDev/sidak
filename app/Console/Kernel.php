@@ -4,7 +4,7 @@ namespace App\Console;
 
 use Carbon\Carbon;
 use App\Models\Alat;
-use App\Models\UserNotification;
+use App\Models\Notification;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -55,10 +55,9 @@ class Kernel extends ConsoleKernel
                                     }
                                 );
                             }
-                            UserNotification::create([
-                                'user_id' => $alat->user_id,
+                            Notification::create([
                                 'message' =>
-                                    '<a href="/dashboard/alat/' .
+                                    '<a href="/dashboard/alat/detail/' .
                                     $alat->id .
                                     '"><p><b>' .
                                     $alat->nama_alat .
@@ -90,10 +89,9 @@ class Kernel extends ConsoleKernel
                                     }
                                 );
                             }
-                            UserNotification::create([
-                                'user_id' => $alat->user_id,
+                            Notification::create([
                                 'message' =>
-                                    '<a href="/dashboard/alat/' .
+                                    '<a href="/dashboard/alat/detail/' .
                                     $alat->id .
                                     '"><p><b>' .
                                     $alat->nama_alat .
@@ -105,10 +103,9 @@ class Kernel extends ConsoleKernel
                             ]);
                         } elseif ($numberDays <= 7) {
                             if ($numberDays < 1) {
-                                UserNotification::create([
-                                    'user_id' => $alat->user_id,
+                                Notification::create([
                                     'message' =>
-                                        '<a href="/dashboard/alat/' .
+                                        '<a href="/dashboard/alat/detail/' .
                                         $alat->id .
                                         '"><p>Status <b>' .
                                         $alat->nama_alat .
@@ -142,10 +139,9 @@ class Kernel extends ConsoleKernel
                                         }
                                     );
                                 }
-                                UserNotification::create([
-                                    'user_id' => $alat->user_id,
+                                Notification::create([
                                     'message' =>
-                                        '<a href="/dashboard/alat/' .
+                                        '<a href="/dashboard/alat/detail/' .
                                         $alat->id .
                                         '"><p><b>' .
                                         $alat->nama_alat .

@@ -1,13 +1,12 @@
 <?php
 
-use Carbon\Carbon;
 use App\Models\Alat;
 use App\Models\User;
-use App\Models\AlatImage;
+use App\Models\AlatImages;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Models\UserNotification;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,7 +25,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/delete-image/{id}', function ($id, Request $request) {
-    $image = AlatImage::find($id);
+    $image = AlatImages::find($id);
     if (
         $request->user_id != $image->user_id &&
         !User::find($request->user_id)->is_admin
@@ -67,19 +66,6 @@ Route::post('/delete-image/{id}', function ($id, Request $request) {
         302
     );
 });
-Route::post('/update-notification/{id}', function ($id, Request $request) {
-    $userNotification = UserNotification::find($id);
-    if (!$userNotification->has_been_view) {
-        $userNotification->has_been_view = 1;
-        $userNotification->save();
-    }
-});
-Route::get('/search', function (Request $request) {
-    return Alat::where('nama_alat', 'like', '%' . $request->search . '%')
-        ->orWhere('merk', 'like', '%' . $request->search . '%')
-        ->orWhere('kode_alat', 'like', '%' . $request->search . '%')
-        ->get();
-});
 
 Route::post('/upload-image', function (Request $request) {
     if (
@@ -94,7 +80,7 @@ Route::post('/upload-image', function (Request $request) {
             302
         );
     }
-    $alat_image = new AlatImage();
+    $alat_image = new AlatImages();
     if ($request->file('dropzone-file')) {
         $file = $request->file('dropzone-file');
         $filename = $file->getClientOriginalName();
@@ -103,7 +89,7 @@ Route::post('/upload-image', function (Request $request) {
         $alat_image['size'] = $file->getSize();
         $alat_image['user_id'] = $request->user_id;
         $alat_image['alat_id'] = $request->alat_id;
-        if (AlatImage::where('name', $filename)->count() > 0) {
+        if (AlatImages::where('name', $filename)->count() > 0) {
             return response()->json(
                 [
                     'success' => 'false',
@@ -124,4 +110,27 @@ Route::post('/upload-image', function (Request $request) {
             'id' => $alat_image->id,
         ],
     ]);
+});
+Route::post('/update-notification/{id}', function ($id, Request $request) {
+    $notification = Notification::find($id);
+    if (
+        $notification->usernotifications
+            ->where('user_id', $request->user_id)
+            ->count() < 1
+    ) {
+        UserNotification::create([
+            'user_id' => $request->user_id,
+            'notification_id' => $id,
+        ]);
+        return response()->json([
+            'success' => true,
+            'message' => 'berhasil mengupdate notification',
+        ]);
+    }
+});
+Route::get('/search', function (Request $request) {
+    return Alat::where('nama_alat', 'like', '%' . $request->search . '%')
+        ->orWhere('merk', 'like', '%' . $request->search . '%')
+        ->orWhere('kode_alat', 'like', '%' . $request->search . '%')
+        ->get();
 });

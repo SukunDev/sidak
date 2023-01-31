@@ -115,7 +115,9 @@ $(document).ready(function () {
     searchPanel.find('ul li').remove()
   })
   $('#notification-button').on('click', function () {
-    $('#notification-content').animate({ height: 'toggle' }, 300)
+    var notifContent = $('#notification-content')
+
+    notifContent.animate({ height: 'toggle' }, 300)
     $('#profile-content').hide()
     $('#searchPanel').hide()
   })
@@ -137,7 +139,7 @@ $(document).ready(function () {
   $('#show-modal-hapus-alat').on('click', function () {
     var modal = $('#modal-hapus-alat')
     modal.show()
-    modal.find('a').attr('href', '/dashboard/alat/hapus/' + $(this).data('id'))
+    modal.find('a').attr('href', '/admin/alat/hapus/' + $(this).data('id'))
   })
   $('#modal-hapus-alat-close').on('click', function () {
     $('#modal-hapus-alat').hide()
@@ -158,12 +160,36 @@ $(document).ready(function () {
     var uploadSertifikat = $(this)
     var modal = $('#modal-upload-sertifikat')
     modal.find('#idForm').val(uploadSertifikat.attr('data-id'))
+    modal.find('#sertifikatForm').show()
+    modal.find('#kebersamaanForm').hide()
     modal
       .find('#title')
       .text(
         'Upload Sertifikat Kalibrasi Pada Tanggal ' +
           uploadSertifikat.attr('data-tanggal'),
       )
+    modal.find('#kalibratorForm').val(uploadSertifikat.attr('data-kalibrator'))
+    modal
+      .find('#tempatKalibrasiForm')
+      .val(uploadSertifikat.attr('data-tempatkalibrasi'))
+    modal.show()
+  })
+  $('.uploadkebersamaan').on('click', function () {
+    var uploadSertifikat = $(this)
+    var modal = $('#modal-upload-sertifikat')
+    modal.find('#idForm').val(uploadSertifikat.attr('data-id'))
+    modal.find('#sertifikatForm').hide()
+    modal.find('#kebersamaanForm').show()
+    modal
+      .find('#title')
+      .text(
+        'Upload Sertifikat Kalibrasi Pada Tanggal ' +
+          uploadSertifikat.attr('data-tanggal'),
+      )
+    modal.find('#kalibratorForm').val(uploadSertifikat.attr('data-kalibrator'))
+    modal
+      .find('#tempatKalibrasiForm')
+      .val(uploadSertifikat.attr('data-tempatkalibrasi'))
     modal.show()
   })
   $('#modal-upload-sertifikat-close').on('click', function () {
@@ -186,14 +212,23 @@ $(document).ready(function () {
       data: { search: search.val() },
       success: function (resp) {
         var searchPanel = $('#searchPanel')
+        var url = window.location.href
+        var isAdminPath
         searchPanel.find('ul li').remove()
         if (resp.length < 1) {
           return
         }
         searchPanel.show()
+        if (url.includes('admin')) {
+          isAdminPath = 'admin'
+        } else {
+          isAdminPath = 'dashboard'
+        }
         $.each(resp, function (key, value) {
           var item = $(
-            '<li><a class="flex items-end gap-2 px-4 py-2 rounded-md hover:bg-gray-100 font-medium text-gray-600 hover:font-normal hover:text-gray-700"href="/dashboard/alat/' +
+            '<li><a class="flex items-end gap-2 px-4 py-2 rounded-md hover:bg-gray-100 font-medium text-gray-600 hover:font-normal hover:text-gray-700"href="/' +
+              isAdminPath +
+              '/alat/detail/' +
               value.id +
               '"><svg class="w-5 fill-current" xmlns="http://www.w3.org/2000/svg"viewBox="0 0 24 24"><path d="M0 0h24v24H0V0z" fill="none" /><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" /></svg>' +
               value.nama_alat +
@@ -247,6 +282,18 @@ $.date = function (orginaldate) {
 }
 
 function notificationView(id, user_id) {
+  var url = window.location.href
+  var isAdminPath
+  var notifContent = $('#notification-content')
+  if (url.includes('admin')) {
+    isAdminPath = 'admin'
+  } else {
+    isAdminPath = 'dashboard'
+  }
+  $.each(notifContent.find('ul').find('li'), function (idx, value) {
+    let link = $(value).find('a')
+    link.attr('href', link.attr('href').replace('dashboard', isAdminPath))
+  })
   var formdata = new FormData()
   formdata.append('user_id', user_id)
   var ajax = new XMLHttpRequest()

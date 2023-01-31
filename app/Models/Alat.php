@@ -37,12 +37,10 @@ class Alat extends Model
     }
     public function jadwal()
     {
-        return $this->hasMany(JadwalKalibrasi::class)->latest(
-            'jadwal_kalibrasi'
-        );
+        return $this->hasMany(AlatJadwal::class)->latest('jadwal_kalibrasi');
     }
     public function images()
     {
-        return $this->hasMany(AlatImage::class);
+        return $this->hasMany(AlatImages::class);
     }
 }
